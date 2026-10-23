@@ -17,11 +17,18 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Extract project
+      - name: Extract new project
         run: |
-          unzip -o CROWN_TV_Arabic_Launcher_Project_v2.zip -d .
-          rm -f .github/workflows/build-apk.yml
+          echo "ZIP files found:"
+          find . -type f -iname "*.zip"
+          ZIP=$(find . -type f -iname "CROWN_TV_Arabic_From_Scratch.zip" -print -quit)
+          if [ -z "$ZIP" ]; then
+            echo "ERROR: New project ZIP was not found"
+            exit 1
+          fi
+          unzip -o "$ZIP" -d .
           test -f settings.gradle.kts
+          test -f app/build.gradle.kts
 
       - uses: gradle/actions/setup-gradle@v4
 
