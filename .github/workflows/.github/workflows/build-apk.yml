@@ -1,14 +1,14 @@
-
 name: Build CROWN TV APK
 
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
+    branches: ["main"] مخ
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -17,11 +17,11 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Extract project
+      - name: Extract new project
         run: |
-          unzip -o CROWN_TV_Arabic_Launcher_Project_v2.zip -d .
-          rm -f .github/workflows/build-apk.yml
+          unzip -o CROWN_TV_Arabic_From_Scratch.zip -d .
           test -f settings.gradle.kts
+          test -f app/build.gradle.kts
 
       - uses: gradle/actions/setup-gradle@v4
 
@@ -33,4 +33,3 @@ jobs:
           name: crown-arabic-tv-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
-          
