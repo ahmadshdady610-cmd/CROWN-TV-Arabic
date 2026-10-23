@@ -17,11 +17,17 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+    
       - name: Extract project
         run: |
           unzip -o CROWN_TV_Arabic_Launcher_Project_v2.zip -d .
+          FILE="app/src/main/java/com/crown/arabictv/CrownDreamService.kt"
+          sed -i 's/runOnUiThread {/Handler(Looper.getMainLooper()).post {/g' "$FILE"
+          grep -q '^import android.os.Handler$' "$FILE" || sed -i '/^package /a import android.os.Handler' "$FILE"
+          grep -q '^import android.os.Looper$' "$FILE" || sed -i '/^package /a import android.os.Looper' "$FILE"
           rm -f .github/workflows/build-apk.yml
           test -f settings.gradle.kts
+          
 
       - uses: gradle/actions/setup-gradle@v4
 
