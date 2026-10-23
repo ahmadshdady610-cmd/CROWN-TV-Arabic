@@ -1,4 +1,3 @@
-
 name: Build CROWN TV APK
 
 on:
@@ -9,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -17,17 +17,11 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-    
-      - name: Extract project
+      - name: Extract new project
         run: |
-          unzip -o CROWN_TV_Arabic_Launcher_Project_v2.zip -d .
-          FILE="app/src/main/java/com/crown/arabictv/CrownDreamService.kt"
-          sed -i 's/runOnUiThread {/Handler(Looper.getMainLooper()).post {/g' "$FILE"
-          grep -q '^import android.os.Handler$' "$FILE" || sed -i '/^package /a import android.os.Handler' "$FILE"
-          grep -q '^import android.os.Looper$' "$FILE" || sed -i '/^package /a import android.os.Looper' "$FILE"
-          rm -f .github/workflows/build-apk.yml
+          unzip -o CROWN_TV_Arabic_From_Scratch.zip -d .
           test -f settings.gradle.kts
-          
+          test -f app/build.gradle.kts
 
       - uses: gradle/actions/setup-gradle@v4
 
@@ -39,4 +33,3 @@ jobs:
           name: crown-arabic-tv-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
-          
